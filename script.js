@@ -49,6 +49,7 @@ function gameControl () {
     const makeMove = (row, col) => {
         if (gameActive && gameBoard[row][col] === "") {
             gameBoard[row][col] = currentPlayer;
+            this.innerText = currentPlayer; // Update UI
             if (checkWin()) {
                 gameActive = false;
                 console.log(`Player ${currentPlayer} wins!`);
@@ -65,8 +66,21 @@ function gameControl () {
         gameBoard = [["", "", ""], ["", "", ""], ["", "", ""]];
         currentPlayer = players.player1;
         gameActive = true;
+        // document.querySelectorAll('.cell').forEach(cell => cell.innerText = ""); // Reset UI
     }
+
     return {
-        makeMove, resetGame
+        makeMove, resetGame,gameBoard
     }
 }
+
+const ticTacToe = gameControl();
+
+// Example usage:
+ticTacToe.makeMove(0, 0);
+ticTacToe.makeMove(1, 1);
+ticTacToe.makeMove(0, 1);
+ticTacToe.makeMove(1, 0);
+ticTacToe.makeMove(0, 2); // Player X wins
+console.log(ticTacToe.gameBoard);
+ticTacToe.resetGame();
