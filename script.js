@@ -50,7 +50,8 @@ function gameControl() {
     const makeMove = (row, col,card) => {
         if (gameActive && gameBoard[row][col] === "") {
             gameBoard[row][col] = currentPlayer;
-            card.innerText = currentPlayer; // Update UI
+            card.innerText = currentPlayer;
+            card.disabled = true; // Disable the button after move
             if (checkWin()) {
                 gameActive = false;
                 console.log(`Player ${currentPlayer} wins!`);
