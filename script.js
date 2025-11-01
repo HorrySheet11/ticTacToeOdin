@@ -1,7 +1,8 @@
-function gameControl () {
+function gameControl() {
     let gameBoard  = [["", "", ""], ["", "", ""], ["", "", ""]];
     let currentPlayer = "X";
     let gameActive = true;
+    let currentPlayerDisplay = document.querySelector('.currentPlayer');
 
     let players = {
         player1 : "X",
@@ -46,18 +47,21 @@ function gameControl () {
         return true;
     }
 
-    const makeMove = (row, col) => {
+    const makeMove = (row, col,card) => {
         if (gameActive && gameBoard[row][col] === "") {
             gameBoard[row][col] = currentPlayer;
-            this.innerText = currentPlayer; // Update UI
+            card.innerText = currentPlayer; // Update UI
             if (checkWin()) {
                 gameActive = false;
                 console.log(`Player ${currentPlayer} wins!`);
+                currentPlayerDisplay.innerText = `Player ${currentPlayer} wins!`;
             } else if (checkDraw()) {
                 gameActive = false;
-                console.log("It's a draw!");
+            console.log("It's a draw!");
+                currentPlayerDisplay.innerText = "It's a draw!";
             } else {
                 currentPlayer = currentPlayer === players.player1 ? players.player2 : players.player1;
+                currentPlayerDisplay.innerText = `Current Player: ${currentPlayer}`;
             }
         }
     }
@@ -66,7 +70,7 @@ function gameControl () {
         gameBoard = [["", "", ""], ["", "", ""], ["", "", ""]];
         currentPlayer = players.player1;
         gameActive = true;
-        // document.querySelectorAll('.cell').forEach(cell => cell.innerText = ""); // Reset UI
+        document.querySelectorAll('.cell').forEach(cell => cell.innerText = ""); // Reset UI
     }
 
     return {
@@ -77,10 +81,10 @@ function gameControl () {
 const ticTacToe = gameControl();
 
 // Example usage:
-ticTacToe.makeMove(0, 0);
-ticTacToe.makeMove(1, 1);
-ticTacToe.makeMove(0, 1);
-ticTacToe.makeMove(1, 0);
-ticTacToe.makeMove(0, 2); // Player X wins
-console.log(ticTacToe.gameBoard);
-ticTacToe.resetGame();
+// ticTacToe.makeMove(0, 0);
+// ticTacToe.makeMove(1, 1);
+// ticTacToe.makeMove(0, 1);
+// ticTacToe.makeMove(1, 0);
+// ticTacToe.makeMove(0, 2); // Player X wins
+// console.log(ticTacToe.gameBoard);
+// ticTacToe.resetGame();
