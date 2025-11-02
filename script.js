@@ -23,7 +23,7 @@ function gameControl() {
         [[0, 2], [1, 1], [2, 0]]
     ];
 
-    const checkWin = ()=> {
+    const checkWin = () => {
         for (let condition of winningConditions) {
             const [a, b, c] = condition;
             if (gameBoard[a[0]][a[1]] !== "" &&
@@ -51,7 +51,7 @@ function gameControl() {
         if (gameActive && gameBoard[row][col] === "") {
             gameBoard[row][col] = currentPlayer;
             card.innerText = currentPlayer;
-            card.disabled = true; // Disable the button after move
+            card.disabled = true; 
             if (checkWin()) {
                 gameActive = false;
                 console.log(`Player ${currentPlayer} wins!`);
@@ -71,7 +71,7 @@ function gameControl() {
         gameBoard = [["", "", ""], ["", "", ""], ["", "", ""]];
         currentPlayer = players.player1;
         gameActive = true;
-        document.querySelectorAll('.cell').forEach(cell => cell.innerText = ""); // Reset UI
+        document.querySelectorAll('.cell').forEach(cell => cell.innerText = ""); 
     }
 
     return {
@@ -81,11 +81,3 @@ function gameControl() {
 
 const ticTacToe = gameControl();
 
-// Example usage:
-// ticTacToe.makeMove(0, 0);
-// ticTacToe.makeMove(1, 1);
-// ticTacToe.makeMove(0, 1);
-// ticTacToe.makeMove(1, 0);
-// ticTacToe.makeMove(0, 2); // Player X wins
-// console.log(ticTacToe.gameBoard);
-// ticTacToe.resetGame();
