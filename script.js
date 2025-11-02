@@ -1,43 +1,42 @@
-function gameControl() {
-    let gameBoard  = [["", "", ""], ["", "", ""], ["", "", ""]];
-    let currentPlayer = "X";
-    let gameActive = true;
-    let currentPlayerDisplay = document.querySelector('.currentPlayer');
+class GameControl {
+    constructor() {
+        this.gameBoard = [["", "", ""], ["", "", ""], ["", "", ""]];
+        this.currentPlayer = "X";
+        this.gameActive = true;
+        this.currentPlayerDisplay = document.querySelector('.currentPlayer');
+    }
 
-    let players = {
-        player1 : "X",
-        player2 : "O"
-    };
+    get winningConditions() {
+        return [
+            // Rows
+            [[0, 0], [0, 1], [0, 2]],
+            [[1, 0], [1, 1], [1, 2]],
+            [[2, 0], [2, 1], [2, 2]],
+            // Columns
+            [[0, 0], [1, 0], [2, 0]],
+            [[0, 1], [1, 1], [2, 1]],
+            [[0, 2], [1, 2], [2, 2]],
+            // Diagonals
+            [[0, 0], [1, 1], [2, 2]],
+            [[0, 2], [1, 1], [2, 0]]
+        ];
+    }
 
-    const winningConditions = [
-        // Rows
-        [[0, 0], [0, 1], [0, 2]],
-        [[1, 0], [1, 1], [1, 2]],
-        [[2, 0], [2, 1], [2, 2]],
-        // Columns
-        [[0, 0], [1, 0], [2, 0]],
-        [[0, 1], [1, 1], [2, 1]],
-        [[0, 2], [1, 2], [2, 2]],
-        // Diagonals
-        [[0, 0], [1, 1], [2, 2]],
-        [[0, 2], [1, 1], [2, 0]]
-    ];
-
-    const checkWin = () => {
-        for (let condition of winningConditions) {
+    checkWin() {
+        for (let condition of this.winningConditions) {
             const [a, b, c] = condition;
-            if (gameBoard[a[0]][a[1]] !== "" &&
-                gameBoard[a[0]][a[1]] === gameBoard[b[0]][b[1]] &&
-                gameBoard[a[0]][a[1]] === gameBoard[c[0]][c[1]]) {
-                    const winner = gameBoard[a[0]][a[1]];
+            if (this.gameBoard[a[0]][a[1]] !== "" &&
+                this.gameBoard[a[0]][a[1]] === this.gameBoard[b[0]][b[1]] &&
+                this.gameBoard[a[0]][a[1]] === this.gameBoard[c[0]][c[1]]) {
+                const winner = this.gameBoard[a[0]][a[1]];
                 return true;
             }
         }
         return false;
     }
 
-    const checkDraw = ()=>  {
-        for (let row of gameBoard) {
+    checkDraw() {
+        for (let row of this.gameBoard) {
             for (let cell of row) {
                 if (cell === "") {
                     return false;
@@ -47,37 +46,32 @@ function gameControl() {
         return true;
     }
 
-    const makeMove = (row, col,card) => {
-        if (gameActive && gameBoard[row][col] === "") {
-            gameBoard[row][col] = currentPlayer;
-            card.innerText = currentPlayer;
-            card.disabled = true; 
-            if (checkWin()) {
-                gameActive = false;
-                console.log(`Player ${currentPlayer} wins!`);
-                currentPlayerDisplay.innerText = `Player ${currentPlayer} wins!`;
-            } else if (checkDraw()) {
-                gameActive = false;
-            console.log("It's a draw!");
-                currentPlayerDisplay.innerText = "It's a draw!";
+    makeMove(row, col, card) {
+        if (this.gameActive && this.gameBoard[row][col] === "") {
+            this.gameBoard[row][col] = this.currentPlayer;
+            card.innerText = this.currentPlayer;
+            card.disabled = true;
+            if (this.checkWin()) {
+                this.gameActive = false;
+                console.log(`Player ${this.currentPlayer} wins!`);
+                this.currentPlayerDisplay.innerText = `Player ${this.currentPlayer} wins!`;
+            } else if (this.checkDraw()) {
+                this.gameActive = false;
+                console.log("It's a draw!");
+                this.currentPlayerDisplay.innerText = "It's a draw!";
             } else {
-                currentPlayer = currentPlayer === players.player1 ? players.player2 : players.player1;
-                currentPlayerDisplay.innerText = `Current Player: ${currentPlayer}`;
+                this.currentPlayer = this.currentPlayer === "X" ? "O" : "X";
+                this.currentPlayerDisplay.innerText = `Current Player: ${this.currentPlayer}`;
             }
         }
     }
 
-    const resetGame = () => {
-        gameBoard = [["", "", ""], ["", "", ""], ["", "", ""]];
-        currentPlayer = players.player1;
-        gameActive = true;
-        document.querySelectorAll('.cell').forEach(cell => cell.innerText = ""); 
-    }
-
-    return {
-        makeMove, resetGame,gameBoard
+    resetGame() {
+        this.gameBoard = [["", "", ""], ["", "", ""], ["", "", ""]];
+        this.currentPlayer = "X";
+        this.gameActive = true;
+        document.querySelectorAll('.cell').forEach(cell => {cell.innerText = ""; cell.disabled = false});
+        this.currentPlayerDisplay.innerText = `Current Player: ${this.currentPlayer}`;
     }
 }
-
-const ticTacToe = gameControl();
-
+let ticTacToe = new GameControl();
